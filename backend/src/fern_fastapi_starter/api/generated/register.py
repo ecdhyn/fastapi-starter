@@ -4,18 +4,25 @@ import glob
 import importlib
 import os
 import types
+import typing
 
 import fastapi
 import starlette
+from fastapi import params
 
 from .core.abstract_fern_service import AbstractFernService
 from .core.exceptions import default_exception_handler, fern_http_exception_handler, http_exception_handler
 from .core.exceptions.fern_http_exception import FernHTTPException
-from .resources.imdb.service.service import AbstractImdbService
+from .prompt_api.service.service import AbstractPromptApiService
 
 
-def register(_app: fastapi.FastAPI, *, imdb: AbstractImdbService) -> None:
-    _app.include_router(__register_service(imdb))
+def register(
+    _app: fastapi.FastAPI,
+    *,
+    prompt_api: AbstractPromptApiService,
+    dependencies: typing.Optional[typing.Sequence[params.Depends]] = None
+) -> None:
+    _app.include_router(__register_service(prompt_api), dependencies=dependencies)
 
     _app.add_exception_handler(FernHTTPException, fern_http_exception_handler)
     _app.add_exception_handler(starlette.exceptions.HTTPException, http_exception_handler)

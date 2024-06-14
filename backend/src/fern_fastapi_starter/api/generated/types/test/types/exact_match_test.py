@@ -3,16 +3,19 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
-from .movie_id import MovieId
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
-class Movie(pydantic.BaseModel):
-    id: MovieId
-    title: str
-    rating: float = pydantic.Field(description=("The rating scale is one to five stars\n"))
+class ExactMatchTest(pydantic.BaseModel):
+    id: str
+    name: str
+    is_passed: bool = pydantic.Field(description="whether the test is passed or not")
+    target: str = pydantic.Field(description="the target phrase")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -23,6 +26,5 @@ class Movie(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        frozen = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}

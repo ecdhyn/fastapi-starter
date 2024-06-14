@@ -3,11 +3,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .api.generated.register import register
-from .movies_service import MoviesService
+from .movies_service import ProManServices
 
 app = FastAPI()
 
-register(app, imdb=MoviesService())
+register(app, prompt_api=ProManServices())
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,6 +26,9 @@ def start() -> None:
         reload=True,
     )
 
+@app.get("/")
+async def read_root():
+    return {"message": "Welcome to the API"}
 
 if __name__ == "__main__":
     start()
