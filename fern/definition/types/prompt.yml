@@ -1,0 +1,52 @@
+imports:
+  tag: ./tag.yml
+  deployment_tag: ./tag.yml
+  transcript: ./transcript.yml
+
+
+types:
+
+  Prompt:
+    properties:
+      id: 
+        type: string
+        docs: the unique ArgoID for the prompt
+      name:
+        type: string
+        docs: name of prompt
+      content: 
+        type: string
+        docs: content of the prompt
+      
+      transcripts:
+        type: list<transcript.Transcript>
+        docs: List of Transcript
+      tags:
+        type: list<tag.Tag>
+        docs: List of Tag
+      deployment_tag:
+        type: tag.DeploymentTag
+        docs: a special tag to keep track of development stage (development, stage, production)
+      create_time:
+        type: datetime
+      prompt_variables:
+        type: list<string>
+        docs: all prompt variables associated with the prompt
+      version_context:
+        type: VersionContext
+        docs: |
+         **readonly** context object to get related prompts
+      additional_comments:
+        type: string
+        docs: provide comments and extra information on the usage of the prompt
+
+  
+  VersionContext:
+    properties:
+      parent_id: 
+        type: string
+        docs: ArgoID of parent prompt
+      children_ids: 
+        type: list<string>
+        docs: ArgoIDs of children prompts
+    

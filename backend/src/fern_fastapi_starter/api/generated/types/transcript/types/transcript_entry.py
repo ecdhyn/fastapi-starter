@@ -5,6 +5,7 @@ import typing
 
 from ....core.datetime_utils import serialize_datetime
 from .tool_call import ToolCall
+from pydantic import ConfigDict
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -30,7 +31,6 @@ class TranscriptEntry(pydantic.BaseModel):
     def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
-
-    class Config:
-        extra = pydantic.Extra.forbid
-        json_encoders = {dt.datetime: serialize_datetime}
+    # TODO[pydantic]: The following keys were removed: `json_encoders`.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
+    model_config = ConfigDict(extra=pydantic.Extra.forbid, json_encoders={dt.datetime: serialize_datetime})

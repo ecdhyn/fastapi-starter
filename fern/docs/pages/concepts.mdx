@@ -1,0 +1,25 @@
+---
+title: Key Concepts
+subtitle: Resources that will help you get started using the Pet Store API
+slug: concepts
+description: Learn about the Pet, Store, and User resources that comprise the Pet Store API. 
+---
+
+### Prompt 
+
+Serving as an instruction for an LLM, prompts are subdivided into DeveloperPrompts and Prompts: DeveloperPrompts have an id and prompt_content, while Prompts act as an extension of
+DeveloperPrompts and include a display_name and parent/children prompts to keep track of revision history.
+
+Prompts also have prompt variables! Prompt variables allow contextual information, conditional statements, and data that changes often to be updated dynamically -- 
+you don't have to change the prompt every time your menu changes. These also have categories (tbd)
+
+### Test 
+
+Tests exist to evaluate the quality of prompts by testing performance on specific metrics. There exist four major types: exact match, RegEx, Semantic Similarity, and JSON Validity.
+You can think of these as the "unit tests" of our prompt manager.
+
+### Transcript Evaluation
+
+Transcript Evaluations gauge the quality of prompts by taking transcripts from calls and evaluating how the system prompt did. A score is given that ranges from 0 to 1 as a decimal value.
+
+

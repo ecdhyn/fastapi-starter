@@ -1,0 +1,13 @@
+name: api
+display-name: ProMan API
+environments:
+  Local: http://localhost:3000
+default-environment: Local
+auth: api_key
+
+auth-schemes:
+  api_key:
+    header: X-API-Key
+    type: string
+error-discrimination:
+  strategy: status-code

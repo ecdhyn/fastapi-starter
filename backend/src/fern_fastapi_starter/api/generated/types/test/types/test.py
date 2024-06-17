@@ -12,6 +12,7 @@ from .exact_match_test import ExactMatchTest
 from .json_validity_test import JsonValidityTest
 from .regex_test import RegexTest
 from .semantic_similarity_test import SemanticSimilarityTest
+from pydantic import ConfigDict
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -73,36 +74,27 @@ class Test(pydantic.BaseModel):
     def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
-
-    class Config:
-        extra = pydantic.Extra.forbid
-        json_encoders = {dt.datetime: serialize_datetime}
+    # TODO[pydantic]: The following keys were removed: `json_encoders`.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
+    model_config = ConfigDict(extra=pydantic.Extra.forbid, json_encoders={dt.datetime: serialize_datetime})
 
 
 class _Test:
     class ExactMatch(ExactMatchTest):
         test_type: typing_extensions.Literal["exact_match"] = pydantic.Field(alias="TestType")
-
-        class Config:
-            allow_population_by_field_name = True
+        model_config = ConfigDict(populate_by_name=True)
 
     class Regex(RegexTest):
         test_type: typing_extensions.Literal["regex"] = pydantic.Field(alias="TestType")
-
-        class Config:
-            allow_population_by_field_name = True
+        model_config = ConfigDict(populate_by_name=True)
 
     class SemanticSimilarity(SemanticSimilarityTest):
         test_type: typing_extensions.Literal["semantic_similarity"] = pydantic.Field(alias="TestType")
-
-        class Config:
-            allow_population_by_field_name = True
+        model_config = ConfigDict(populate_by_name=True)
 
     class JsonValidity(JsonValidityTest):
         test_type: typing_extensions.Literal["json_validity"] = pydantic.Field(alias="TestType")
-
-        class Config:
-            allow_population_by_field_name = True
+        model_config = ConfigDict(populate_by_name=True)
 
 
 Test.update_forward_refs()

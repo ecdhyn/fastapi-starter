@@ -1,0 +1,42 @@
+imports:
+  prompt: ./types/prompt.yml
+  errors: ./types/errors.yml
+  transcript: ./types/transcript.yml
+
+service:
+  base-path: /v1/prompts
+  auth: true
+
+  endpoints:
+    getPrompt:
+      display-name: Get Prompt
+      path: ""
+      method: GET
+      request:
+        name: phone_number
+        query-parameters:
+          phone_number: string
+      response: prompt.Prompt
+      docs: Retrieves the prompt for phone bot given a phone number
+      errors:
+        - errors.BadRequestError
+        - errors.UnauthorizedError
+        - errors.InternalServerError
+
+# will need to replace this with endpoint to accept transcript via POST request
+    postTranscript:
+      display-name: Post Transcript
+      path: "/{prompt_id}/transcripts"
+      path-parameters:
+        prompt_id: string
+      method: POST
+      request:
+        body: transcript.TranscriptRequest
+      response:
+        transcript.Transcript
+      docs: Receives a transcript in the body of the POST from the Transcript API and assigns it to the associated prompt in ProMan
+      errors:
+        - errors.BadRequestError
+        - errors.UnauthorizedError
+        - errors.InternalServerError
+    

@@ -1,0 +1,67 @@
+types:
+  TestType:
+    enum:
+      - exact_match
+      - regex
+      - semantic_similarity
+      - json_validity
+
+  ExactMatchTest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      is_passed:
+        type: boolean
+        docs: whether the test is passed or not
+      target:
+        type: string
+        docs: the target phrase
+
+
+  RegexTest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      is_passed:
+        type: boolean
+        docs: whether the test is passed or not
+      target:
+        type: string
+        docs: the target phrase
+
+
+  SemanticSimilarityTest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      score:
+        type: double
+        docs: similarity score between 0 and 1
+      target:
+        type: string
+        docs: the target phrase
+
+  JsonValidityTest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      is_passed:
+        type: boolean
+        docs: whether the JSON is valid or not
+
+
+  Test:
+    discriminant: TestType
+    union:
+      exact_match: ExactMatchTest
+      regex: RegexTest
+      semantic_similarity: SemanticSimilarityTest
+      json_validity: JsonValidityTest

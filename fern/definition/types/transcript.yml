@@ -1,0 +1,104 @@
+types:
+  TranscriptRequest:
+    properties:
+      call_sid:
+        type: string
+        docs: the unique identifier for the call session
+      merchant_id:
+        type: string
+        docs: the merchant's unique identifier
+      merchant_phone_number:
+        type: string
+        docs: the phone number of the merchant involved in the call
+      customer_phone_number:
+        type: string
+        docs: the phone number of the customer involved in the call
+      call_start_time:
+        type: string
+        docs: the start time of the call, formatted as MM/DD/YYYY:HH:MM
+      call_end_time:
+        type: string
+        docs: the end time of the call, formatted as MM/DD/YYYY:HH:MM
+      prompt_id:
+        type: string
+        docs: the unique ArgoID identifier of the prompt used during the call
+      prompt_content:
+        type: string
+        docs: the content of the prompt
+      prompt_variables:
+        type: list<string>
+        docs: a list of variables associated with the prompt
+      transcript_content:
+        type: list<TranscriptEntry>
+        docs: a detailed list of transcript entries detailing the conversation
+
+  Transcript:
+    extends: TranscriptRequest
+    properties:
+      id:
+        type: string
+        docs: |
+          **Read only** an ArgoID for the transcript
+
+  TranscriptEntry:
+    properties:
+      role:
+        type: string
+        docs: the role of the speaker in the transcript
+      content:
+        type: optional<string>
+        docs: the content of what was spoken
+      name:
+        type: optional<string>
+        docs: the name of the speaker, if available
+      tool_call_id:
+        type: optional<string>
+        docs: the unique identifier for a tool call within this entry
+      tool_calls:
+        type: optional<list<ToolCall>>
+        docs: a list of tool calls associated with this transcript entry
+
+  ToolCall:
+    properties:
+      index:
+        type: integer
+        docs: the index of the tool call in the sequence
+      id:
+        type: string
+        docs: the unique identifier of the tool call
+      function:
+        type: FunctionCall
+        docs: the function call details
+      type:
+        type: string
+        docs: the type of tool call (e.g., function)
+
+  FunctionCall:
+    properties:
+      arguments:
+        type: optional<string>
+        docs: the arguments used in the function call
+      name:
+        type: optional<string>
+        docs: the name of the function
+
+  TranscriptEvaluation:
+    properties:
+      id: 
+        type: string
+        docs: the unique ArgoID for the transcript evaluation
+      name:
+        type: string
+        docs: name of transcript evaluation
+      content: 
+        type: string
+        docs: content of the transcript evaluation
+      transcript_id:
+        type: string
+        docs: the ArgoID of the associated transcript
+      prompt_id:
+        type: string
+        docs: the ArgoID of the associated prompt
+      score:
+        type: double
+        docs: a score from 0 to 1 identifying how well the transcript did

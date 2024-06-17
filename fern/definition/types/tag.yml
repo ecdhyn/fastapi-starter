@@ -1,0 +1,16 @@
+types:
+
+  DeploymentTag:
+    enum:
+      - DEVELOPMENT
+      - STAGING
+      - PRODUCTION
+        
+  Tag:
+    properties:
+      id: 
+        type: string
+        docs: the unique ArgoID for the tag
+      name:
+        type: string
+        docs: name of tag

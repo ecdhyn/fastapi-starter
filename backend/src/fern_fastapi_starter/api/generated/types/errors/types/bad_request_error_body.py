@@ -5,6 +5,7 @@ import typing
 
 from ....core.datetime_utils import serialize_datetime
 from .error_body import ErrorBody
+from pydantic import ConfigDict
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -26,8 +27,6 @@ class BadRequestErrorBody(ErrorBody):
     def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
-
-    class Config:
-        allow_population_by_field_name = True
-        extra = pydantic.Extra.forbid
-        json_encoders = {dt.datetime: serialize_datetime}
+    # TODO[pydantic]: The following keys were removed: `json_encoders`.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
+    model_config = ConfigDict(populate_by_name=True, extra=pydantic.Extra.forbid, json_encoders={dt.datetime: serialize_datetime})

@@ -1,0 +1,59 @@
+errors:
+  BadRequestError:
+    status-code: 400
+    type: BadRequestErrorBody
+  UnauthorizedError:
+    status-code: 401
+    type: UnauthorizedErrorBody
+  NotFoundError:
+    status-code: 404
+    type: NotFoundErrorBody
+  InternalServerError:
+    status-code: 500
+    type: InternalServerErrorBody
+
+types:
+  ErrorBody:
+    properties:
+      error_code:
+        type: string
+        docs: A unique error code for the error
+      error_message:
+        type: string
+        docs: A human-readable error message
+      metadata:
+        type: unknown
+        docs: Additional metadata about the error
+
+  BadRequestErrorBody:
+    extends: ErrorBody
+    examples:
+      - name: BadRequestErrorExample
+        value:
+          error_code: bad_request
+          error_message: The request was malformed
+          metadata: {}
+  UnauthorizedErrorBody:
+    extends: ErrorBody
+    examples:
+      - name: UnauthorizedErrorExample
+        value:
+          error_code: unauthorized
+          error_message: The request was unauthorized
+          metadata: {}
+  NotFoundErrorBody:
+    extends: ErrorBody
+    examples:
+      - name: NotFoundErrorExample
+        value:
+          error_code: not_found
+          error_message: The resource was not found
+          metadata: {}
+  InternalServerErrorBody:
+    extends: ErrorBody
+    examples:
+      - name: InternalServerErrorExample
+        value:
+          error_code: internal_server_error
+          error_message: An internal server error occurred
+          metadata: {}
